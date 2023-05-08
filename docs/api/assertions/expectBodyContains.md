@@ -41,10 +41,25 @@ Response body.
 
 ## Examples
 
+Normal
 ```js
 const { spec } = require('pactum');
 
 await spec()
   .get('https://httpbin.org/robots.txt')
   .expectBodyContains(`User-agent: *`);
+```
+
+Work with `stores`
+```js
+const { spec } = require('pactum');
+
+await spec()
+  .get('http://jsonplaceholder.typicode.com/posts')
+  .expectStatus(200)
+  .stores('FirstPostId', '[0].id');
+
+await spec()
+  .get('https://httpbin.org/robots.txt')
+  .expectBodyContains('$S{FirstPostId}');
 ```
